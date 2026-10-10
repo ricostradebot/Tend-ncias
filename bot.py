@@ -117,7 +117,7 @@ def heartbeat(now, st):
     for h, m in BEATS:
         key = f"{now:%Y-%m-%d}-{h}{m}"
         target = now.replace(hour=h, minute=m, second=0, microsecond=0)
-        if 0 <= (now - target).total_seconds() < 1800 and key not in st["hb"]:
+        if 0 <= (now - target).total_seconds() < 3600 and key not in st["hb"]:
             send("✅ Estou rodando")
             st["hb"] = (st["hb"] + [key])[-10:]
 
