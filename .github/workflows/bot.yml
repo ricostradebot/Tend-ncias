@@ -1,35 +1,29 @@
 name: Rico Trader Bot
 
 on:
-    schedule:
+  schedule:
     - cron: "*/30 * * * *"
-
   workflow_dispatch:
 
 permissions:
   contents: write
 
-concurrency:
-  group: rico-trader
-  cancel-in-progress: false
-
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Rodar bot
-        run: python bot.py
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python bot.py
       - name: Salvar estado
         run: |
-          git config user.name "rico-bot"
+          git config user.name "bot"
           git config user.email "bot@users.noreply.github.com"
           git add state.json
-          git diff --cached --quiet || (git commit -m "estado" && git push)
+          git diff --cached --quiet || (git commit -m "state" && git push)
